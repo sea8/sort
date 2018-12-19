@@ -287,8 +287,8 @@ class SortController extends Controller
         return view('sort', $data);
     }
 
-    // 希尔排序2
-    public function shell2(){
+    // 快速排序
+    public function quick(){
         $num = 20;
         for ($i=0; $i < $num; $i++) {
             $arr[] = rand(100,1000);
@@ -296,38 +296,73 @@ class SortController extends Controller
         }
         $init['yAxis'] = json_encode($arr);
         $init['color'] = json_encode($color_arr);
-        //计算数组长度
-        $length=count($arr);
-        //计算增量
-        $gap = floor($num/2);
-        while ($gap > 0){
-            //根据增量进行分组，进行直接插入排序
-            for ($i = $gap; $i < $length; $i++) {
-                $tmp = $arr[$i];
-                for ($j=$i-$gap; $j >0 ; $j-=$gap) {
-                    if ($tmp<$arr[$j]) {
-                        $arr[$j+$gap]=$arr[$j];
-                        $arr[$j]=$tmp;
-                    }else{
-                        break;
-                    }
-                }
-            }
-            $gap = floor($gap/2);
+        $sort = $this->_mpartition($arr, 0, $num-1, $color_arr);
+        $data['init'] = $init;
+        $data['sort'] = $sort;
+        return view('sort', $data);
+    }
+
+    private function _mpartition(&$arr, $start, $end, &$color_arr, &$yAxis = array(), &$color = array()){
+        if( $start >= $end ){
+            return;
         }
-        echo implode(',', $arr);
-        exit;
+        $i = $start;
+        $j = $end;
+        // 设置基准数
+        $baseval = $arr[$start];
+        while ($i < $j){
+            while ( $i < $j && $arr[$j] >= $baseval){
+                $j--;
+            }
+//            $color_arr[$i] = '#ac2925';
+//            $color_arr[$j] = '#f0ad4e';
+//            $color[] = $color_arr;
+//            $yAxis[] = $arr;
+            if( $i < $j ){
+                $arr[$i] = $arr[$i] ^ $arr[$j];
+                $arr[$j] = $arr[$i] ^ $arr[$j];
+                $arr[$i] = $arr[$i] ^ $arr[$j];
+                $i++;
+            }
+//            $color_arr[$i-1] = '#337ab7';
+//            $color_arr[$j] = '#ac2925';
+//            $color[] = $color_arr;
+            $yAxis[] = $arr;
+            while ( $i < $j && $arr[$i] < $baseval ){
+                $i++;
+            }
+//            $color_arr[$j] = '#ac2925';
+//            $color_arr[$i] = '#f0ad4e';
+//            $color[] = $color_arr;
+//            $yAxis[] = $arr;
+            if( $i < $j ){
+                $arr[$j] = $arr[$j] ^ $arr[$i];
+                $arr[$i] = $arr[$j] ^ $arr[$i];
+                $arr[$j] = $arr[$j] ^ $arr[$i];
+                $j--;
+            }
+//            $color_arr[$j+1] = '#337ab7';
+//            $color_arr[$i] = '#ac2925';
+//            $color[] = $color_arr;
+            $yAxis[] = $arr;
+        }
+        // 递归
+        $this->_mpartition($arr, $start, $i - 1, $color_arr, $yAxis, $color);
+        $this->_mpartition($arr, $i + 1, $end, $color_arr, $yAxis, $color);
+        $data = array(
+            'yAxis' => json_encode($yAxis),
+            'color' => json_encode($color),
+        );
+        return $data;
     }
 
     // 归并排序
-    // 申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列
-    public function merge(){
-        $num = 11;
-        for ($i=0; $i < $num; $i++) {
-            $arr[] = rand(100,1000);
-            $color_arr[] = '#337ab7';
-        }
-        $init['yAxis'] = json_encode($arr);
-        $init['color'] = json_encode($color_arr);
+    public function marge(){
+
+    }
+
+    // 堆排序
+    public function heap(){
+
     }
 }

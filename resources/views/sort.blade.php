@@ -16,8 +16,8 @@
 				<li role="presentation" class="{{ Request::path() == 'bubble2' ? 'active' : ''}}" ><a href="{{ url('/bubble2') }}">冒泡排序2</a></li>
 				<li role="presentation" class="{{ Request::path() == 'selection' ? 'active' : ''}}" ><a href="{{ url('/selection') }}">选择排序</a></li>
 				<li role="presentation" class="{{ Request::path() == 'insertion' ? 'active' : ''}}" ><a href="{{ url('/insertion') }}">直接插入排序</a></li>
-				<li role="presentation" class="{{ Request::path() == 'shell' ? 'active' : ''}}" ><a href="{{ url('/shell') }}">希尔排序1</a></li>
-				<li role="presentation" class="{{ Request::path() == 'shell2' ? 'active' : ''}}" ><a href="{{ url('/shell2') }}">希尔排序2</a></li>
+				<li role="presentation" class="{{ Request::path() == 'shell' ? 'active' : ''}}" ><a href="{{ url('/shell') }}">希尔排序</a></li>
+				<li role="presentation" class="{{ Request::path() == 'quick' ? 'active' : ''}}" ><a href="{{ url('/quick') }}">快速排序</a></li>
 			</ul>
 		</div>
 	</div>
@@ -64,8 +64,16 @@
 
             $("#test").click(function(event) {
                 var timer = window.setInterval(function(){
-                    var color = sort_color.shift();
+                    if( sort_color.length > 1){
+                        var color = sort_color.shift();
+					}else{
+                        var color = init_color;
+					}
                     var yAxis = sort_yAxis.shift();
+					if( sort_yAxis.length == 0 ){
+                        var color = ["#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439","#398439"];
+					}
+
                     var option = {
                         xAxis: {
                             data: yAxis,

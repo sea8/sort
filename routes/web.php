@@ -17,4 +17,4 @@ Route::get('/bubble2', 'SortController@bubble2');
 Route::get('/selection', 'SortController@selection');
 Route::get('/insertion', 'SortController@insertion');
 Route::get('/shell', 'SortController@shell');
-Route::get('/shell2', 'SortController@shell2');
+Route::get('/quick', 'SortController@quick');
